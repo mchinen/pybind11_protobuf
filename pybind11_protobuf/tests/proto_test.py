@@ -12,12 +12,12 @@ import copy
 import pickle
 
 import unittest
-import parameterized
+from absl.testing import parameterized
 from pybind11_protobuf import proto
 from pybind11_protobuf.tests import proto_example
 from pybind11_protobuf.tests import test_pb2
-from google3.net.proto2.contrib.pyutil import compare
-from google3.net.proto2.python.public import text_format
+import compare
+from google.protobuf import text_format
 
 if str is bytes:  # PY2
   import cPickle as pickle  # pylint: disable=g-import-not-at-top
@@ -77,7 +77,7 @@ def named_parameters_test_special_copy_methods():
              proto_attr)
 
 
-class ProtoTest(parameterized.TestCase, compare.Proto2Assertions):
+class ProtoTest(parameterized.TestCase, compare.ProtoAssertions):
 
   NATIVE_AND_WRAPPED_TEST_MESSAGES = (('wrapped',
                                        proto_example.TestMessage(int_value=5)),
@@ -88,11 +88,11 @@ class ProtoTest(parameterized.TestCase, compare.Proto2Assertions):
     # Python sees unregistered messages as the base class type.
     self.assertEqual(
         str(type(proto_example.make_int_message())),
-        "<class 'google3.third_party.pybind11_protobuf.proto.ProtoMessage'>")
+        "<class 'pybind11_protobuf.proto.ProtoMessage'>")
     # Python sees registered messages as a concrete type.
     self.assertEqual(
         str(type(proto_example.make_test_message())),
-        "<class 'google3.third_party.pybind11_protobuf.tests.proto_example.TestMessage'>"
+        "<class 'pybind11_protobuf.tests.proto_example.TestMessage'>"
     )
 
   def test_return_wrapped_message(self):
@@ -556,7 +556,7 @@ class ProtoTest(parameterized.TestCase, compare.Proto2Assertions):
   def test_pickle_roundtrip(self, message):
     pickled = pickle.dumps(message, pickle.HIGHEST_PROTOCOL)
     restored = pickle.loads(pickled)
-    self.assertProto2Equal(restored, message)
+    self.assertProtoEqual(restored, message)
 
   @parameterized.named_parameters(named_parameters_test_special_copy_methods())
   def test_special_copy_methods(self, copier, make_proto, proto_attr):
@@ -592,7 +592,7 @@ class ProtoTest(parameterized.TestCase, compare.Proto2Assertions):
         str(message), FULLY_POPULATED_TEST_MESSAGE_TEXT_FORMAT)
 
   def test_proto_2_equal(self):
-    self.assertProto2Equal(FULLY_POPULATED_TEST_MESSAGE_TEXT_FORMAT,
+    self.assertProtoEqual(FULLY_POPULATED_TEST_MESSAGE_TEXT_FORMAT,
                            get_fully_populated_test_message())
 
   @parameterized.named_parameters(
@@ -603,7 +603,7 @@ class ProtoTest(parameterized.TestCase, compare.Proto2Assertions):
     message = get_fully_populated_test_message()
     message_copy = proto_example.TestMessage()
     message_copy.ParseFromString(message.SerializeToString(**kwargs))
-    self.assertProto2Equal(FULLY_POPULATED_TEST_MESSAGE_TEXT_FORMAT,
+    self.assertProtoEqual(FULLY_POPULATED_TEST_MESSAGE_TEXT_FORMAT,
                            message_copy)
 
   def test_serialize_invalid_kwargs(self):

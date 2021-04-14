@@ -15,17 +15,23 @@ pybind_extension(
     ],
 )
 
+py_library(
+    name = "compare",
+    srcs = ["compare.py"],
+)
+
 py_test(
     name = "proto_test",
     srcs = ["proto_test.py"],
     data = [
-        ":proto_example.so",
         "//pybind11_protobuf:proto.so",
-    ],
-    srcs_version = "PY2AND3",
-    deps = [
-        ":test_py_pb2",
         "@com_google_protobuf//:proto_api",
+    ],
+    #srcs_version = "PY2AND3",
+    deps = [
+        ":compare",
+        ":proto_example.so",
+        ":test_py_pb2",
     ],
 )
 
@@ -41,7 +47,8 @@ cc_proto_library(
 
 py_proto_library(
     name = "test_py_pb2",
-    deps = [":test_proto"],
+    srcs = ["test.proto"],
+    #    deps = [":test_proto"],
 )
 
 py_test(
