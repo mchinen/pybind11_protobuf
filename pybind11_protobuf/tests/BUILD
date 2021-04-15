@@ -24,13 +24,13 @@ py_test(
     name = "proto_test",
     srcs = ["proto_test.py"],
     data = [
+        ":proto_example.so",
         "//pybind11_protobuf:proto.so",
         "@com_google_protobuf//:proto_api",
     ],
     #srcs_version = "PY2AND3",
     deps = [
         ":compare",
-        ":proto_example.so",
         ":test_py_pb2",
     ],
 )
