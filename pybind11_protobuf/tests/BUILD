@@ -15,11 +15,6 @@ pybind_extension(
     ],
 )
 
-py_library(
-    name = "compare",
-    srcs = ["compare.py"],
-)
-
 py_test(
     name = "proto_test",
     srcs = ["proto_test.py"],
@@ -28,7 +23,6 @@ py_test(
         "//pybind11_protobuf:proto.so",
         "@com_google_protobuf//:proto_api",
     ],
-    #srcs_version = "PY2AND3",
     deps = [
         ":compare",
         ":test_py_pb2",
@@ -48,7 +42,6 @@ cc_proto_library(
 py_proto_library(
     name = "test_py_pb2",
     srcs = ["test.proto"],
-    #    deps = [":test_proto"],
 )
 
 py_test(
@@ -58,7 +51,6 @@ py_test(
         ":proto_example.so",
         "//pybind11_protobuf:proto.so",
     ],
-    srcs_version = "PY2AND3",
 )
 
 py_test(
@@ -68,7 +60,6 @@ py_test(
         ":proto_example.so",
         "//pybind11_protobuf:proto.so",
     ],
-    srcs_version = "PY2AND3",
 )
 
 # An example (and test) of using an alternative path for the protobuf module.
@@ -135,4 +126,9 @@ py_test(
         "@com_google_protobuf//:proto_api",
         "@com_google_protobuf//:use_fast_cpp_protos",
     ],
+)
+
+py_library(
+    name = "compare",
+    srcs = ["compare.py"],
 )

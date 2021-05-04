@@ -11,9 +11,7 @@ pybind_library(
     srcs = ["proto_utils.cc"],
     hdrs = ["proto_utils.h"],
     deps = [
-        #"@com_google_protobuf//:any_cc_proto",  # copybara:strip
-        #"@com_google_protobuf//:descriptor_cc_proto",
-        "@com_google_protobuf//:protobuf",
+        "@com_google_protobuf//:protobuf",  # copybara:strip
     ],
 )
 

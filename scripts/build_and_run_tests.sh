@@ -68,9 +68,7 @@ export PYTHON_LIB_PATH=`python3 -c "import sysconfig; print(sysconfig.get_path('
 echo "Using PYTHON_BIN_PATH: $PYTHON_BIN_PATH"
 echo "Using PYTHON_LIB_PATH: $PYTHON_LIB_PATH"
 
-#BAZEL_CXXOPTS="-std=c++11" bazel test ...  --test_output=errors
-#BAZEL_CXXOPTS="-std=c++14" bazel test ...  --test_output=errors
-#BAZEL_CXXOPTS="-std=c++17" bazel test ...  --test_output=errors
-BAZEL_CXXOPTS="-std=c++17" bazel test pybind11_protobuf/tests:proto_test  --test_output=errors
+# Currently only a subset of tests build.  The next one to fix is protobuf_test
+BAZEL_CXXOPTS="-std=c++17" bazel test pybind11_protobuf/tests:proto_test --test_output=errors
 
 

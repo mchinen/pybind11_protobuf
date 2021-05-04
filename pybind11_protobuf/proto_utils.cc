@@ -21,7 +21,7 @@ void pybind11_proto_casters_collision() {
   // and proto_utils.cc to detect potential ODR violations in libraries.
 
   // Avoid mixing fast_cpp_proto_casters.h and proto_casters.h in the same
-  // build target; this violates the ODR rule for type_caster<proto2::Message>
+  // build target; this violates the ODR rule for type_caster<::google::protobuf::Message>
   // as well as other potential types, and can lead to hard to diagnose bugs,
   // crashes, and other mysterious bad behavior.
 
@@ -47,7 +47,7 @@ struct GenericEnum {};
 // template functions don't exist in C++, so you must define a class with a
 // static member function (HandleField) which will be called.
 template <template <typename> class Handler, typename... Args>
-    auto DispatchFieldDescriptor(const ::google::protobuf::FieldDescriptor* field_desc,
+auto DispatchFieldDescriptor(const ::google::protobuf::FieldDescriptor* field_desc,
                              Args... args)
     -> decltype(Handler<int32_t>::HandleField(field_desc, args...)) {
   // If this field is a map, the field_desc always describes a message with
